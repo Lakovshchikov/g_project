@@ -1,0 +1,9 @@
+.game-scene{ 
+    position: absolute;
+    z-index: 1000;
+    display: flex;
+}
+
+.game-scene-row {
+    margin: 1em;
+}

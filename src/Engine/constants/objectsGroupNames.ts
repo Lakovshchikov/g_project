@@ -1,0 +1,3 @@
+export enum ENEMIES_GROUPS {
+  SELECTABLE = "SELECTABLE",
+}
