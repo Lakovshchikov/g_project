@@ -27,7 +27,7 @@ export class SceneController implements ISceneController {
     this._scene.remove(object);
   }
 
-  addObjectToGroup(object: ISceneObject, groups: string[] = []) {
+  addObjectToGroups(object: ISceneObject, groups: string[] = []) {
     const objectGroups = object.getGroups();
     const allGroups = Array.from(new Set([...objectGroups, ...groups]));
 
@@ -43,7 +43,7 @@ export class SceneController implements ISceneController {
     });
   }
 
-  removeObjectFromGroup(object: ISceneObject, groups: string[] = []) {
+  removeObjectFromGroups(object: ISceneObject, groups: string[] = []) {
     const objectGroups = object.getGroups();
     const allGroups = Array.from(new Set([...objectGroups, ...groups]));
 

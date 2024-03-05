@@ -1,4 +1,3 @@
-import THREE from "three";
 import { type IEngine } from "../Core/Interfaces/IEngine";
 import { type ISceneObjectFactory } from "../Core/Interfaces/ISceneObjectFactory";
 import { MouseControls } from "./Interfaces/MouseControls";
@@ -33,16 +32,18 @@ export class CreateObjectControls extends MouseControls {
       const dir = mousePosition.sub(this._engine.getCamera().position).normalize();
       const distance = -this._engine.getCamera().position.z / dir.z;
       const pos = this._engine.getCamera().position.clone().add(dir.multiplyScalar(distance));
-      pos.setZ(0);
 
       const object = this._factory.createObject();
-      object.getObject().position.copy(pos);
+      const mesh = object.getObject();
+      mesh.geometry.computeBoundingBox();
 
-      const helper = new THREE.Box3Helper(new THREE.Box3().setFromObject(object.getObject()), 0xffff00);
-      this._engine.getSceneController().addObjectToScene(helper);
+      const bbox = mesh.geometry.boundingBox;
+      const height = (bbox?.max?.z ?? 0) - (bbox?.min.z ?? 0);
+      pos.setZ(height);
+      mesh.position.copy(pos);
 
-      this._engine.getSceneController().addObjectToScene(object.getObject());
-      this._engine.getSceneController().addObjectToGroup(object);
+      this._engine.getSceneController().addObjectToScene(mesh);
+      this._engine.getSceneController().addObjectToGroups(object);
     }
   }
 }

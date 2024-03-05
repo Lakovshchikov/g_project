@@ -35,6 +35,13 @@ module.exports = {
     "@typescript-eslint/semi": ["error", "always"],
     "@typescript-eslint/no-misused-promises": 0,
     "@typescript-eslint/promise-function-async": 0,
-    "@typescript-eslint/explicit-function-return-type" : 0
+    "@typescript-eslint/explicit-function-return-type" : 0,
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "@typescript-eslint/strict-boolean-expressions": 0,
   }
 };

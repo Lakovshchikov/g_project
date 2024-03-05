@@ -11,9 +11,9 @@ export interface ISceneController {
 
   removeObjectFromScene: (object: Object3D) => void;
 
-  addObjectToGroup: (object: ISceneObject, groups?: string[]) => void;
+  addObjectToGroups: (object: ISceneObject, groups?: string[]) => void;
 
-  removeObjectFromGroup: (object: ISceneObject, groups?: string[]) => void;
+  removeObjectFromGroups: (object: ISceneObject, groups?: string[]) => void;
 
   removeObjectFromAllGroups: (object: ISceneObject) => void;
 }

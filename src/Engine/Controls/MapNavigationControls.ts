@@ -20,8 +20,10 @@ export class MapNavigationControls extends MouseControls {
   private readonly MIN_ZOOM_VALUE = 0.5;
   private readonly MAX_ZOOM_VALUE = 10;
   private readonly ZOOM_SPEED = 0.25;
+  private readonly PAN_SPEED = 2;
   // TO DO movement on border
   private readonly _params: INavigationParams;
+
   private readonly _firstPoint: THREE.Vector3 = new THREE.Vector3();
 
   private readonly _onWheelBinded: (e: WheelEvent) => void;
@@ -40,15 +42,15 @@ export class MapNavigationControls extends MouseControls {
   }
 
   private onWheel(e: WheelEvent) {
+    const mousePosition = this.getWorldCoordinates(e);
     const camera = this._engine.getCamera();
     const speed = e.deltaY * 0.01 * this.ZOOM_SPEED;
 
-    if (camera.position.z + speed >= this.MAX_ZOOM_VALUE) {
-      camera.position.z = this.MAX_ZOOM_VALUE;
-    } else if (camera.position.z + speed <= this.MIN_ZOOM_VALUE) {
-      camera.position.z = this.MIN_ZOOM_VALUE;
-    } else {
-      camera.position.z = camera.position.z + speed;
+    const dir = mousePosition.sub(camera.position).normalize();
+    const pos = camera.position.clone().add(dir.multiplyScalar(-speed));
+
+    if (pos.z < this.MAX_ZOOM_VALUE && pos.z > this.MIN_ZOOM_VALUE) {
+      camera.position.copy(pos);
     }
   }
 
@@ -68,14 +70,13 @@ export class MapNavigationControls extends MouseControls {
 
   private onMouseMove(e: MouseEvent) {
     const camera = this._engine.getCamera();
+    const mousePosition = this.getUnprojectCoordinates(e);
 
-    const mousePositionVector = this.getUnprojectCoordinates(e);
-    const cameraPosition = camera.position;
+    const newPosition = mousePosition.clone().sub(this._firstPoint).multiplyScalar(-this.PAN_SPEED);
 
-    const newPosition = mousePositionVector.sub(this._firstPoint).add(cameraPosition).setZ(cameraPosition.z);
-    this._firstPoint.copy(newPosition);
+    camera.position.add(newPosition);
 
-    camera.position.copy(newPosition);
+    this._firstPoint.copy(this.getUnprojectCoordinates(e));
   }
 
   enable(): void {

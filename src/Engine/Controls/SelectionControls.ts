@@ -121,6 +121,7 @@ export class SelectionControls extends MouseControls {
 
       const newMinVector = new THREE.Vector3(selectionBbox.min.x, selectionBbox.min.y, 0);
       const newMaxVector = new THREE.Vector3(selectionBbox.max.x, selectionBbox.max.y, 1);
+
       selectionBbox.set(newMinVector, newMaxVector);
 
       selectableObjects.forEach((object) => {

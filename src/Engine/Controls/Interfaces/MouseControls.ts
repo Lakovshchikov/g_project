@@ -35,8 +35,10 @@ export abstract class MouseControls {
 
   protected getUnprojectCoordinates(e: MouseEvent) {
     const { x, y } = this.getNormalizedCoordinates(e);
+    const camera = this._engine.getCamera();
+    camera.updateMatrixWorld();
 
-    return new THREE.Vector3(x, y).unproject(this._engine.getCamera());
+    return new THREE.Vector3(x, y).unproject(camera);
   }
 
   abstract enable(): void;
